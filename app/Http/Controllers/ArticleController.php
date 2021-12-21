@@ -27,7 +27,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $article = $request->isMethod('put') ? Article::findOrFail($request->id) : new Article;
+        $article->id = $request->input('id');
+        $article->title = $request->input('title');
+        $article->body = $request->input('body');
+
+        if($article->save())
+            return new ArticleResource($article);
     }
 
     /**
@@ -45,18 +51,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -64,6 +58,10 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // get article
+        $article = Article::findOrFail($id);
+        if($article->delete()){
+            return new ArticleResource($article);
+        }
     }
 }
