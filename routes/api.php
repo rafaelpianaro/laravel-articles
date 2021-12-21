@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // list the articles
-Route::get('articles', 'ArticleController@index');
+Route::get('articles', '\App\Http\Controllers\ArticleController@index');
 
 // single article
 Route::get('article/{id}', 'ArticleController@show');
